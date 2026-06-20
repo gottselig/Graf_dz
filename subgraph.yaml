@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FlashLoanOracleStrategy
+    network: sepolia
+    source:
+      address: "0x0000000000000000000000000000000000000000"
+      abi: FlashLoanOracleStrategy
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - FlashLoanRequest
+        - FlashLoanExecution
+        - OraclePrice
+        - EtherTransfer
+        - TokenWithdrawal
+      abis:
+        - name: FlashLoanOracleStrategy
+          file: ./abis/FlashLoanOracleStrategy.json
+      eventHandlers:
+        - event: FlashLoanRequested(indexed address,uint256)
+          handler: handleFlashLoanRequested
+        - event: FlashLoanExecuted(indexed address,uint256,uint256,int256,uint256)
+          handler: handleFlashLoanExecuted
+        - event: OraclePriceRead(int256,uint8,uint256)
+          handler: handleOraclePriceRead
+        - event: EtherSent(indexed address,uint256)
+          handler: handleEtherSent
+        - event: TokenWithdrawn(indexed address,indexed address,uint256)
+          handler: handleTokenWithdrawn
+      file: ./src/mapping.ts

@@ -1,0 +1,49 @@
+type FlashLoanRequest @entity(immutable: true) {
+  id: Bytes!
+  asset: Bytes!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FlashLoanExecution @entity(immutable: true) {
+  id: Bytes!
+  asset: Bytes!
+  amount: BigInt!
+  premium: BigInt!
+  oraclePrice: BigInt!
+  finalBalance: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OraclePrice @entity(immutable: true) {
+  id: Bytes!
+  price: BigInt!
+  decimals: Int!
+  updatedAt: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EtherTransfer @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenWithdrawal @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes!
+  to: Bytes!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

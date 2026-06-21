@@ -1,13 +1,13 @@
 {
   "name": "otus-graph-flashloan-oracle",
   "version": "1.0.0",
-  "description": "Homework project: Chainlink oracle contract, AAVE flashloan strategy, Web3.js script and The Graph indexer.",
+  "description": "Homework project: Chainlink oracle contract, AAVE flashloan strategy, ethers.js script and The Graph indexer.",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
     "copy-abi": "mkdir -p abis && cp artifacts/contracts/FlashLoanOracleStrategy.sol/FlashLoanOracleStrategy.json abis/FlashLoanOracleStrategy.json",
     "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
-    "web3": "node scripts/web3Client.js",
+    "ethers": "node scripts/ethersClient.js",
     "graph:codegen": "graph codegen",
     "graph:build": "graph build"
   },
@@ -16,7 +16,7 @@
     "chainlink",
     "aave",
     "thegraph",
-    "web3"
+    "ethers"
   ],
   "license": "MIT",
   "devDependencies": {
@@ -27,6 +27,6 @@
     "hardhat": "^2.22.18"
   },
   "dependencies": {
-    "web3": "^4.16.0"
+    "ethers": "^6.17.0"
   }
 }

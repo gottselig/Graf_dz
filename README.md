@@ -4,7 +4,7 @@
 
 - контракт `FlashLoanOracleStrategy` использует Chainlink price feed;
 - в контракте реализован AAVE V3 `flashLoanSimple` flow и место для swap-стратегии через произвольный `swapTarget`;
-- окружение использует Hardhat, Solidity, Web3.js;
+- окружение использует Hardhat, Solidity, ethers.js вместо Web3.js;
 - JS-скрипт читает цену газа, баланс, Chainlink-цену, умеет отправлять ETH и вызывать flashloan;
 - добавлен The Graph subgraph для событий контракта;
 - есть минимальные тесты контракта.
@@ -27,14 +27,27 @@ npm install
 cp .env.example .env
 ```
 
-Заполните `.env`: `SEPOLIA_RPC_URL`, `PRIVATE_KEY`, `AAVE_POOL`, `CHAINLINK_ETH_USD`.
+Заполните `.env`:
+
+```env
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_KEY
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+CONTRACT_ADDRESS=0xYOUR_DEPLOYED_CONTRACT
+AAVE_POOL=0x6Ae43d3271ff6888e7Fc43Fd7321a503ff738951
+CHAINLINK_ETH_USD=0x694AA1769357215DE4FAC081bf1f309aDC325306
+```
 
 ## Проверка
 
 ```bash
 npm run compile
 npm test
+npm run copy-abi
+npm run graph:codegen
+npm run graph:build
 ```
+
+Локальные тесты используют mock-контракты `MockAggregatorV3`, `MockAavePool` и `MockERC20`, поэтому для них не нужны реальные AAVE или Chainlink endpoints.
 
 ## Деплой
 
@@ -44,13 +57,17 @@ npm run deploy:sepolia
 
 После деплоя добавьте адрес в `.env` как `CONTRACT_ADDRESS`.
 
-## Web3.js
+## ethers.js
+
+Скрипт `scripts/ethersClient.js` работает с контрактом через ethers.js:
 
 ```bash
-npm run web3 -- status
-npm run web3 -- send-eth 0xRecipient 0.001
-npm run web3 -- flashloan 0xAsset 1000000000000000000
+npm run ethers -- status
+npm run ethers -- send-eth 0xRecipient 0.001
+npm run ethers -- flashloan 0xAsset 1000000000000000000
 ```
+
+Команда `status` читает текущую цену газа, ETH-баланс аккаунта и Chainlink oracle price из контракта.
 
 ## The Graph
 
@@ -74,9 +91,8 @@ npm run graph:build
 Для сдачи:
 
 ```bash
-git init
 git add .
-git commit -m "Add Chainlink AAVE flashloan strategy and The Graph indexer"
-git remote add origin <your-repository-url>
+git commit -m "Replace Web3.js client with ethers.js"
+git remote set-url origin <your-repository-url>
 git push -u origin main
 ```

@@ -17,11 +17,23 @@ if (!contractAddress) {
 
 const contract = new web3.eth.Contract(artifact.abi, contractAddress);
 
-async function getAccount() {
-  if (!privateKey) {
+function normalizePrivateKey(value) {
+  if (!value) {
     throw new Error("Set PRIVATE_KEY in .env");
   }
-  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+
+  const trimmed = value.trim();
+  const prefixed = trimmed.startsWith("0x") ? trimmed : `0x${trimmed}`;
+
+  if (!/^0x[0-9a-fA-F]{64}$/.test(prefixed)) {
+    throw new Error("PRIVATE_KEY must be a 64-character hex string, with or without 0x prefix");
+  }
+
+  return prefixed;
+}
+
+async function getAccount() {
+  const account = web3.eth.accounts.privateKeyToAccount(normalizePrivateKey(privateKey));
   web3.eth.accounts.wallet.add(account);
   return account;
 }

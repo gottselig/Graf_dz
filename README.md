@@ -85,14 +85,3 @@ npm run copy-abi
 npm run graph:codegen
 npm run graph:build
 ```
-
-## Git
-
-Для сдачи:
-
-```bash
-git add .
-git commit -m "Replace Web3.js client with ethers.js"
-git remote set-url origin <your-repository-url>
-git push -u origin main
-```
